@@ -1,0 +1,12 @@
+{{> header}}
+{{#each posts}}
+	<article>
+		<h2>
+			<a href="/blog/{{id}}">{{title}}</a>
+		</h2>
+		<p>
+			{{excerpt}}
+		</p>
+	</article>
+{{/each}}
+{{> footer}}

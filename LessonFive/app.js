@@ -23,6 +23,7 @@ var blogPosts = {
 // Load external dependencies
 var path = require('path');
 var express = require('express');
+var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
 var livereload = require('livereload');
 
@@ -38,6 +39,12 @@ var app = express();
 app.engine('.hbs', exphbs({extname: '.hbs'}));
 app.set('view engine', '.hbs');
 
+//enables us to reference static files in the public folder
+app.use(express.static('public'));
+
+//enables us to parse data received from the front end
+app.use(bodyParser.urlencoded({ extended: false }));
+
 // Homepage
 app.get('/', function (request, response) {
     response.render('home');
@@ -46,6 +53,35 @@ app.get('/', function (request, response) {
 // Contact Page
 app.get('/contact', function (request, response) {
     response.render('contact');
+});
+
+//Post to contact page
+app.post('/contact', function (request, response) {
+  var formBody = {
+    'name': request.body.name,
+    'email': request.body.email,
+    'subject': request.body.subject,
+    'message': request.body.message
+  }
+
+  var missingName = (formBody.name === '');
+  var missingEmail = (formBody.email === '');
+  var missingMessage = (formBody.message === '');
+
+  console.log(formBody);
+
+  if(missingName || missingEmail || missingMessage){
+    return response.render('contact', {
+      error: true,
+      message: 'Some fields are missing',
+      formBody,
+      missingName,
+      missingEmail,
+      missingMessage
+    });
+  }else {
+    response.render('contact', {formBody});
+  }
 });
 
 //Blog page
@@ -76,11 +112,5 @@ app.get('/blog/:post_id', function (request, response) {
 
 // Start our on port 5000
 app.listen(5000, function () {
-	console.log('Lesson 3 listening on port 5000!');
+	console.log('Lesson 5 listening on port 5000!');
 });
-
-
-
-
-
-

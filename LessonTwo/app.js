@@ -1,18 +1,14 @@
 // Load external dependencies
 var path = require('path');
 var express = require('express');
-
-//Load and Set up handlebars
-var handlebars = require('express-handlebars').create({
-  partialsDir: path.join(__dirname, "views/partials"),
-  extname: 'hbs'
-});
+var bodyParser = require('body-parser');
+var exphbs  = require('express-handlebars');
 
 // Ready up Express so we can start using it
 var app = express();
 
-app.engine('hbs', handlebars.engine);
-app.set('view engine', 'hbs');
+app.engine('.hbs', exphbs({extname: '.hbs'}));
+app.set('view engine', '.hbs');
 
 // Homepage
 app.get('/', function (request, response) {

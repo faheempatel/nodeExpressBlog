@@ -44,6 +44,9 @@ var app = express();
 app.engine('hbs', handlebars.engine);
 app.set('view engine', 'hbs');
 
+//enables us to reference static files in the public folder
+app.use(express.static('public'));
+
 // Homepage
 app.get('/', function (request, response) {
     response.render('home');
@@ -82,7 +85,7 @@ app.get('/blog/:post_id', function (request, response) {
 
 // Start our on port 5000
 app.listen(5000, function () {
-	console.log('Lesson 3 listening on port 5000!');
+	console.log('Lesson 4 listening on port 5000!');
 });
 
 

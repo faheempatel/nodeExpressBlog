@@ -26,7 +26,7 @@ app.get('/contact', function (request, response) {
 
 // Start our on port 5000
 app.listen(5000, function () {
-	console.log('Lesson 1 listening on port 5000!');
+	console.log('Lesson 2 listening on port 5000!');
 });
 
 

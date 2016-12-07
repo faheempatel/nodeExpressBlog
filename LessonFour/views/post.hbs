@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>{{post.title}} | Blog</title>
+    {{> head}}
+  </head>
+  <body>
+    {{> header}}
+
+    <main class="main post">
+      <div class="container">
+        <h1 class="heading">
+          <a href="/blog">Blog</a>
+          <strong>{{post.title}}</strong>
+        </h1>
+
+        <main class="post-content">
+          {{{post.content}}}
+        </main>
+      </div>
+    </main>
+
+    {{> footer}}
+  </body>
+</html>

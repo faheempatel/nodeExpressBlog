@@ -24,9 +24,3 @@ app.get('/contact', function (request, response) {
 app.listen(5000, function () {
 	console.log('Lesson 2 listening on port 5000!');
 });
-
-
-
-
-
-

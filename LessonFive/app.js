@@ -26,6 +26,10 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var exphbs  = require('express-handlebars');
 var livereload = require('livereload');
+var mailgun = require('mailgun-js')({ 
+  apiKey: 'key-31facac671b2b0af91c9b4118bafdf58', 
+  domain: 'sandbox3a4e53f45ca441429d637dd312f322bb.mailgun.org' 
+});
 
 // Livereload
 var server = livereload.createServer({
@@ -55,8 +59,9 @@ app.get('/contact', function (request, response) {
     response.render('contact');
 });
 
-//Post to contact page
+// Handle the contact form submission
 app.post('/contact', function (request, response) {
+  
   var formBody = {
     'name': request.body.name,
     'email': request.body.email,
@@ -68,19 +73,39 @@ app.post('/contact', function (request, response) {
   var missingEmail = (formBody.email === '');
   var missingMessage = (formBody.message === '');
 
-  console.log(formBody);
-
-  if(missingName || missingEmail || missingMessage){
-    return response.render('contact', {
+  if(missingName || missingEmail || missingMessage) {
+    response.render('contact',{
       error: true,
       message: 'Some fields are missing',
-      formBody,
-      missingName,
-      missingEmail,
-      missingMessage
-    });
-  }else {
-    response.render('contact', {formBody});
+      formBody: formBody,
+      missingName: missingName,
+      missingEmail: missingEmail,
+      missingMessage: missingMessage
+    })
+  } else {
+
+    var emailOptions = {
+      from: formBody.name + '<' + formBody.email + '>',
+      to: 'paulfitz99@gmail.com',
+      subject: 'Website contact form - ' + formBody.subject,
+      text: formBody.message
+    }
+
+    mailgun.messages().send(emailOptions, function (error, res) {
+      console.log(res);
+      if(error) {
+        response.render('contact', {
+          error: true,
+          message: 'There was an error sending the message',
+          formBody: request.body
+        })
+      } else {
+        response.render('contact', {
+          success: true,
+          message: 'Your message has been successfully sent!'
+        })
+      }
+    })
   }
 });
 

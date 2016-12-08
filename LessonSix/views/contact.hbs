@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Contact</title>
+    {{> head}}
+  </head>
+  <body>
+    {{> header}}
+
+    <main class="main contact">
+      <div class="container">
+        <h1 class="heading">Contact</h1>
+
+        {{#if error}}
+          <p class="error">{{message}}</p>
+        {{/if}}
+
+        {{#if success}}
+          <p class="success">{{message}}</p>
+        {{/if}}
+
+          <form class="form" method="post" action="/contact">
+            
+            <div class="field">
+              <label class="label">Name</label>
+              <input class="input" type="text" name="name" value={{formBody.name}}>
+            </div>
+
+            {{#if missingName}}
+              <p class="missing">The name is required.</p>
+            {{/if}}
+
+            <div class="field">
+              <label class="label">Email</label>
+              <input class="input" type="text" name="email" value={{formBody.email}}>
+            </div>
+
+            {{#if missingEmail}}
+              <p class="missing">The email is required.</p>
+            {{/if}}
+
+            <div class="field">
+              <label class="label">Subject</label>
+              <div class="select">
+                <select name="subject">
+                  <option value="press">Press inquiry</option>
+                  <option value="work">Work opportunity</option>
+                  <option value="hi">Just to say hi!</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Message</label>
+              <textarea class="textarea" name="message">{{formBody.message}}</textarea>
+            </div>
+
+            {{#if missingMessage}}
+              <p class="missing">The message is required.</p>
+            {{/if}}
+
+
+            <div class="field no-label">
+              <button class="button">Send</button>
+            </div>
+
+          </form>
+      </div>
+    </main>
+
+    {{> footer}}
+  </body>
+</html>
